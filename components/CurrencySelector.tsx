@@ -57,7 +57,7 @@ export function CurrencySelector({
             border
             bg-white
             shadow-lg
-            w-[var(--radix-select-trigger-width)]
+            w-(--radix-select-trigger-width)
           "
           position="popper"
         >
