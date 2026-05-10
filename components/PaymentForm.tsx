@@ -185,8 +185,9 @@ export function PaymentForm({ onPaymentSubmit }: PaymentFormProps) {
       </div>
 
       {/* Amount and Currency */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="sm:col-span-2">
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className="md:col-span-2">
           <label htmlFor="amount" className="block text-xs sm:text-sm font-semibold text-card-foreground mb-2 sm:mb-3">
             Amount
           </label>
