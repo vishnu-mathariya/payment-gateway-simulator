@@ -34,19 +34,25 @@ export default function Home() {
   }, [dispatch]);
 
   const handleRetry = async () => {
-    if (!currentTransactionId || !canRetry || !selectedTransaction) {
+    if (!currentTransactionId || !canRetry) {
+      return;
+    }
+
+    const transaction = selectedTransaction || getTransaction(currentTransactionId);
+    if (!transaction) {
       return;
     }
 
     const payload: PaymentPayload = {
-      cardholderName: selectedTransaction.id,
-      cardNumber: selectedTransaction.cardNumber,
-      expiryDate: 'MM/YY',
-      cvv: '000',
-      amount: selectedTransaction.amount,
-      currency: selectedTransaction.currency,
+      cardholderName: transaction.cardholderName,
+      cardNumber: transaction.cardNumber,
+      expiryDate: transaction.expiryDate,
+      cvv: transaction.cvv,
+      amount: transaction.amount,
+      currency: transaction.currency,
       transactionId: currentTransactionId,
     };
+
 
     const result = await retryPayment(payload);
 
@@ -55,7 +61,7 @@ export default function Home() {
     } else if (result.isTimeout) {
       updateTransactionStatus(currentTransactionId, 'timeout');
     } else {
-      updateTransactionStatus(currentTransactionId, 'failed', error);
+      updateTransactionStatus(currentTransactionId, 'failed', error ?? undefined);
     }
   };
 
@@ -122,7 +128,7 @@ export default function Home() {
       {(status === 'success' || status === 'failed' || status === 'timeout') && (
         <StatusScreen
           status={status}
-          message={successMessage || error}
+          message={successMessage || error || undefined}
           failureReason={selectedTransaction?.failureReason}
           currentAttempt={currentAttempt}
           maxAttempts={maxAttempts}

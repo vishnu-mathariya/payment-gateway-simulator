@@ -119,7 +119,7 @@ export function PaymentForm({ onPaymentSubmit }: PaymentFormProps) {
           onChange={(e) => updateCardNumber(e.target.value)}
           onBlur={() => setTouched('cardNumber', true)}
           aria-describedby={getFieldError('cardNumber') ? 'error-cardNumber' : undefined}
-          maxLength="23"
+          maxLength={23}
           className={`w-full px-4 sm:px-5 py-2.5 sm:py-3 border-2 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm sm:text-base transition-all ${
             getFieldError('cardNumber') ? 'border-destructive bg-red-50' : 'border-input bg-muted hover:border-primary/50'
           }`}
@@ -147,7 +147,7 @@ export function PaymentForm({ onPaymentSubmit }: PaymentFormProps) {
             aria-describedby={
               getFieldError('expiryDate') ? 'error-expiryDate' : undefined
             }
-            maxLength="5"
+            maxLength={5}
             className={`w-full px-4 sm:px-5 py-2.5 sm:py-3 border-2 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm sm:text-base transition-all ${
               getFieldError('expiryDate') ? 'border-destructive bg-red-50' : 'border-input bg-muted hover:border-primary/50'
             }`}
@@ -223,7 +223,7 @@ export function PaymentForm({ onPaymentSubmit }: PaymentFormProps) {
       <button
         type="submit"
         disabled={!isValid || isSubmitting || status === 'processing'}
-        className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-all text-sm sm:text-base shadow-lg hover:shadow-xl disabled:shadow-none"
+        className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed transition-all text-sm sm:text-base shadow-lg hover:shadow-xl disabled:shadow-none cursor-pointer"
         aria-label={status === 'processing' ? 'Processing payment...' : 'Pay now'}
       >
         {status === 'processing' ? (
@@ -243,7 +243,7 @@ export function PaymentForm({ onPaymentSubmit }: PaymentFormProps) {
         <button
           type="button"
           onClick={handleReset}
-          className="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-muted text-card-foreground font-semibold rounded-xl sm:rounded-2xl hover:bg-muted/80 transition-all text-sm sm:text-base"
+          className="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-muted text-card-foreground font-semibold rounded-xl sm:rounded-2xl hover:bg-muted/80 transition-all text-sm sm:text-base cursor-pointer"
         >
           Clear Form
         </button>

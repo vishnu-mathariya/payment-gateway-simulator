@@ -92,13 +92,13 @@ export function StatusScreen({
               <>
                 <button
                   onClick={onRetry}
-                  className="flex-1 px-4 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 transition-all text-sm sm:text-base shadow-lg hover:shadow-xl"
+                  className="flex-1 px-4 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 transition-all text-sm sm:text-base shadow-lg hover:shadow-xl cursor-pointer"
                 >
                   Retry
                 </button>
                 <button
                   onClick={onReset}
-                  className="flex-1 px-4 py-3 sm:py-4 bg-muted text-card-foreground font-semibold rounded-xl sm:rounded-2xl hover:bg-muted/80 transition-all text-sm sm:text-base"
+                  className="flex-1 px-4 py-3 sm:py-4 bg-muted text-card-foreground font-semibold rounded-xl sm:rounded-2xl hover:bg-muted/80 transition-all text-sm sm:text-base cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -107,7 +107,7 @@ export function StatusScreen({
             {(isSuccess || (isFailed && !canRetry)) && (
               <button
                 onClick={onReset}
-                className="w-full px-4 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 transition-all text-sm sm:text-base shadow-lg hover:shadow-xl"
+                className="w-full px-4 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl sm:rounded-2xl hover:bg-primary/90 transition-all text-sm sm:text-base shadow-lg hover:shadow-xl cursor-pointer"
               >
                 {isSuccess ? 'Make Another Payment' : 'Close'}
               </button>

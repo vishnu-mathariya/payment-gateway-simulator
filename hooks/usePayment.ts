@@ -18,13 +18,14 @@ const TIMEOUT_DURATION = 6000;
 
 export function usePayment() {
   const dispatch = useDispatch<AppDispatch>();
-  const { status, error, successMessage, currentAttempt, maxAttempts, currentTransactionId } =
+  const { status, error, successMessage, currentAttempt, maxAttempts, currentTransactionId, transactions } =
     useSelector((state: RootState) => state.payment);
 
   const processPayment = useCallback(
     async (payload: PaymentPayload) => {
       const abortController = new AbortController();
       const timeoutId = setTimeout(() => abortController.abort(), TIMEOUT_DURATION);
+      const existingTransaction = transactions.find((t) => t.id === payload.transactionId);
 
       try {
         dispatch(setStatus('processing'));
@@ -53,32 +54,64 @@ export function usePayment() {
           status: 'success',
           timestamp: Date.now(),
           cardNumber: payload.cardNumber,
+          cardholderName: payload.cardholderName,
+          expiryDate: payload.expiryDate,
+          cvv: payload.cvv,
           attempts: currentAttempt,
         };
 
         dispatch(setStatus('success'));
         dispatch(setSuccessMessage(`Payment of ${payload.currency} ${payload.amount} successful!`));
-        dispatch(addTransaction(transaction));
-        saveTransaction(transaction);
+
+        if (existingTransaction) {
+          dispatch(updateTransaction({ id: payload.transactionId, updates: transaction }));
+          updateStoredTransaction(payload.transactionId, transaction);
+        } else {
+          dispatch(addTransaction(transaction));
+          saveTransaction(transaction);
+        }
 
         return { success: true };
       } catch (err) {
         clearTimeout(timeoutId);
 
-        if (err instanceof Error && err.name === 'AbortError') {
-          dispatch(setStatus('timeout'));
-          dispatch(setError('Payment request timed out. Please try again.'));
-          return { success: false, isTimeout: true };
+        const isTimeout = err instanceof Error && err.name === 'AbortError';
+        const errorMessage = isTimeout
+          ? 'Payment request timed out. Please try again.'
+          : err instanceof Error
+          ? err.message
+          : 'Payment processing failed';
+        const statusToSet: PaymentStatus = isTimeout ? 'timeout' : 'failed';
+
+        dispatch(setStatus(statusToSet));
+        dispatch(setError(errorMessage));
+
+        const failedTransaction: Transaction = {
+          id: payload.transactionId,
+          amount: payload.amount,
+          currency: payload.currency,
+          status: statusToSet,
+          timestamp: Date.now(),
+          cardNumber: payload.cardNumber,
+          cardholderName: payload.cardholderName,
+          expiryDate: payload.expiryDate,
+          cvv: payload.cvv,
+          failureReason: errorMessage,
+          attempts: currentAttempt,
+        };
+
+        if (existingTransaction) {
+          dispatch(updateTransaction({ id: payload.transactionId, updates: failedTransaction }));
+          updateStoredTransaction(payload.transactionId, failedTransaction);
+        } else {
+          dispatch(addTransaction(failedTransaction));
+          saveTransaction(failedTransaction);
         }
 
-        const errorMessage = err instanceof Error ? err.message : 'Payment processing failed';
-        dispatch(setError(errorMessage));
-        dispatch(setStatus('failed'));
-
-        return { success: false, isTimeout: false };
+        return { success: false, isTimeout };
       }
     },
-    [dispatch, currentAttempt]
+    [dispatch, currentAttempt, transactions]
   );
 
   const retryPayment = useCallback(

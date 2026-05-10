@@ -22,28 +22,23 @@ interface PaymentResult {
 function simulateGatewayResponse(): { success: boolean; reason?: string; delay?: number } {
   const random = Math.random();
 
-  // if (random < 0.6) {
-  //   return { success: true };
-  // }
+  if (random < 0.6) {
+    return { success: true };
+  }
 
-  // if (random < 0.85) {
-  //   const reasons = [
-  //     'Insufficient funds',
-  //     'Card declined',
-  //     'Invalid card details',
-  //     'Transaction limit exceeded',
-  //     'Card expired',
-  //   ];
-  //   const reason = reasons[Math.floor(Math.random() * reasons.length)];
-  //   return { success: false, reason };
-  // }
+  if (random < 0.85) {
+    const reasons = [
+      'Insufficient funds',
+      'Card declined',
+      'Invalid card details',
+      'Transaction limit exceeded',
+      'Card expired',
+    ];
+    const reason = reasons[Math.floor(Math.random() * reasons.length)];
+    return { success: false, reason };
+  }
 
-  // return { success: false, delay: 8000 };
-
-  return Response.json({
-  status: "failed",
-  reason: "Insufficient funds",
-});
+  return { success: false, delay: 8000 };
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<PaymentResult>> {

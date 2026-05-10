@@ -35,6 +35,9 @@ export interface Transaction {
   status: PaymentStatus;
   timestamp: number;
   cardNumber: string;
+  cardholderName: string;
+  expiryDate: string;
+  cvv: string;
   failureReason?: string;
   attempts: number;
 }
