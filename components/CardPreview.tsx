@@ -41,7 +41,7 @@ export function CardPreview({ cardData }: CardPreviewProps) {
   return (
     <div className="w-full">
       <div
-        className={`bg-gradient-to-br ${getCardColor(
+        className={`bg-linear-to-br ${getCardColor(
           cardType
         )} rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 text-white shadow-2xl hover:shadow-2xl/50 transform transition-all duration-300 aspect-video flex flex-col justify-between`}
         role="img"

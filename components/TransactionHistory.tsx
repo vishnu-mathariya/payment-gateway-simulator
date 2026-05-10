@@ -52,7 +52,7 @@ export function TransactionHistory({ transactions, onSelectTransaction }: Transa
                   {maskCardNumber(transaction.cardNumber)}
                 </div>
               </div>
-              <div className="text-right flex-shrink-0">
+              <div className="text-right shrink-0">
                 <div className="font-bold text-card-foreground text-xs sm:text-sm">
                   {transaction.currency} {transaction.amount.toFixed(2)}
                 </div>
